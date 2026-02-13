@@ -1,39 +1,45 @@
-# Projet-Cible-D-tection-d-activit-s-maritimes-AIS-
 Détection d'Activités Maritimes par Analyse de Flux AIS
 
-Ce projet vise à résoudre un défi majeur de l'intelligence de marché maritime : caractériser les activités des navires (sondage, maintenance, transit) à partir de données brutes AIS (Automatic Identification System).
+Ce projet vise à caractériser les activités des navires à partir de données AIS. Il démontre une capacité à traiter des signaux spatio-temporels complexes pour isoler des comportements métiers spécifiques (ex: sondage vs transit).
 
-L'enjeu est de distinguer des activités à forte variabilité (sondage des fonds marins) des phases de transit standard, en utilisant des techniques de Feature Engineering et de Machine Learning.
+🚀 Fonctionnalités Clés
 
-🚀 Fonctionnalités du Projet
+Simulation Dynamique : Génération de trajectoires GPS réalistes (Lat/Lon) basées sur la physique du mouvement naval.
 
-Le pipeline implémenté dans le fichier projet_ais_spinergie.py effectue les étapes suivantes :
+Carte Interactive (Folium) : Génération d'un fichier trajectoire_ais.html permettant de visualiser les parcours sur un fond de carte réel (OpenStreetMap).
 
-Simulation de données AIS réalistes : Création de datasets simulant le comportement de navires en route (vitesse élevée, cap stable) et en opération (vitesse faible, trajectoire complexe).
+Bleu : Transit (vitesse élevée, cap stable).
 
-Feature Engineering Avancé :
+Rouge : Sondage (vitesse faible, trajectoire sinueuse).
 
-Gestion du cap (COG) : Calcul de la variation de cap avec gestion du passage critique 359° -> 0°.
+Feature Engineering Temporel : Utilisation de fenêtres glissantes pour capturer la signature statistique de chaque activité.
 
-Indicateurs de stabilité : Calcul de l'écart-type glissant (Rolling Std) du cap et de la vitesse.
+📈 Analyse de Performance
 
-Efficiency Index : Création d'un ratio métier reliant vitesse et stabilité directionnelle.
+Le modèle de classification (Random Forest) a été évalué sur un jeu de test de 30% des données simulées.
 
-Classification : Entraînement d'un modèle Random Forest pour identifier le type d'activité avec une précision élevée.
+Métriques Clés
 
-Analyse de l'importance des variables : Visualisation des paramètres les plus discriminants pour la décision du modèle.
+Précision (Accuracy) : ~99% sur les données simulées.
+
+F1-Score (Sondage) : 1.00 (Le modèle distingue parfaitement les phases de travail grâce à la variabilité du cap).
+
+Importance des Variables : La variable SOG (vitesse) et COG_std_5m (stabilité du cap) sont les deux leviers de décision principaux.
+
+Interprétation de la Matrice de Confusion
+
+La matrice montre une séparation quasi-parfaite des classes. En contexte réel, la performance pourrait légèrement baisser face à des conditions météorologiques (dérive due au courant), mais l'utilisation de l'écart-type glissant du cap (COG_std_5m) reste le descripteur le plus robuste face au bruit.
 
 🛠️ Installation et Utilisation
 
-Prérequis
+pip install pandas numpy scikit-learn matplotlib seaborn folium
 
-Python 3.8+
 
-Bibliothèques : pandas, numpy, scikit-learn, matplotlib, seaborn
+Ouvrez ensuite le fichier trajectoire_ais.html dans votre navigateur pour explorer la carte.
 
-Lancement
+🎯 Impact pour Spinergie
 
-python projet_ais_spinergie.py
+Cette méthodologie permet d'enrichir automatiquement la base de connaissances du produit Market Intelligence en qualifiant les opérations navales sans intervention manuelle, optimisant ainsi le suivi de la flotte offshore en temps réel.
 
 
 📊 Sources de Données Réelles
